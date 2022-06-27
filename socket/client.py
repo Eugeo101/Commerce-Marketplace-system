@@ -21,7 +21,9 @@ BUY = "BUY"
 GET_BALANCE = "GET_BALANCE"
 GET_ITEMS = "GET_ITEMS"
 GET_PROFILE = "GET_PROFILE"
-UPDATE_CART = "UPDATE_CART"
+ADD_CART = "ADD_CART"
+REMOVE_CART = "REMOVE_CART"
+GET_CART = "GET_CART"
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(ADDR)
 
@@ -52,7 +54,7 @@ def receive():
 login = {"email":"Ahmed@gmail.com","password":"Ahmed50"}
 change_password = {"email":"Ahmed@gmail.com","password":"Ahmed50","new_password":"Ahmed40"}
 deposit = {"email":"Ahmed@gmail.com","amount":"500"}
-cart = {"email":"Ahmed@gmail.com","items":[{"2":"1"},{"5":"3"},{"6":"1"}]}
+cart = {"email":"Ahmed@gmail.com","item":"30"}
 balance = "3000"
 server_response = "OK"
 get_request = {"email":"Ahmed@gmail.com"}
@@ -86,10 +88,18 @@ elif requestType == BUY:
     get_request["request"] = BUY
     send(get_request)
     server_response = receive() #{"response":"OK","balance":"3000"} -> successful buy / {"response":"NO","items":[]}  -> not enough in stock
-elif requestType == UPDATE_CART:
-    cart["request"] = UPDATE_CART
+elif requestType == ADD_CART:
+    cart["request"] = ADD_CART
     send(cart)
-    server_response = receive() #{"response":"OK"} -> successful update / {"response":"NO","items":[]} -> not enough in stock
+    server_response = receive() #{"response":"OK"} -> successfuly added to cart / {"response":"NO","stock":"3"} -> not enough in stock
+elif requestType == REMOVE_CART:
+    cart["request"] = REMOVE_CART
+    send(cart)
+    server_response = receive() #{"response":"OK"} -> successful removal
+elif requestType == GET_CART:
+    get_request["request"] = GET_CART
+    send(get_request)
+    receive() 
 elif requestType == GET_BALANCE:
     get_request = {"request":GET_BALANCE}
     send(get_request)
