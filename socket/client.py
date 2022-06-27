@@ -32,10 +32,12 @@ JOB = "job"
 CASH = "cash"
 STOCK = "stock"
 ITEMS = "items"
-PASSWROD = "password"
+PASSWORD = "password"
 NEW_PASSWORD = "new_password"
 DEPOSIT_AMOUNT = "amount"
 ITEM_ID = "item_id"
+OK = "OK"
+NO = "NO"
 #--------------------------------------------#
 
 #------------Initialize client socket-----------#
