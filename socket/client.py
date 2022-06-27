@@ -32,6 +32,10 @@ JOB = "job"
 CASH = "cash"
 STOCK = "stock"
 ITEMS = "items"
+PASSWROD = "password"
+NEW_PASSWORD = "new_password"
+DEPOSIT_AMOUNT = "amount"
+ITEM_ID = "item_id"
 #--------------------------------------------#
 
 #------------Initialize client socket-----------#
@@ -136,7 +140,7 @@ class Socket:
 # login = {"email":"Ahmed@gmail.com","password":"Ahmed50"}
 # change_password = {"email":"Ahmed@gmail.com","password":"Ahmed50","new_password":"Ahmed40"}
 # deposit = {"email":"Ahmed@gmail.com","amount":"500"}
-# cart = {"email":"Ahmed@gmail.com","item":"30"}
+# cart = {"email":"Ahmed@gmail.com","item_id":"30"}
 # get_request = {"email":"Ahmed@gmail.com"}
 # account_info = {"fname":"Ahmed","lname":"Alaa","email":"Ahmed@gmail.com","password":"Ahmed50","bdate":"2000\01\01","country":"Egypt","city":"Cairo","job":"Worker"}
 # edit_info = {"fname":"Ahmed","lname":"Alaa","email":"Ahmed@gmail.com","bdate":"2000\01\01","country":"Egypt","city":"Cairo","Job":"Worker"}
