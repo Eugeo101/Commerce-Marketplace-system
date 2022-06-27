@@ -5,13 +5,7 @@ from collections import namedtuple
 from json import JSONEncoder
 from urllib import request
 
-HEADER = 64
-PORT = 5050
-FORMAT = 'utf-8'
-DISCONNECT_MESSAGE = "!DISCONNECT"
-SERVER = "192.168.1.13"
-ADDR = (SERVER, PORT)
-
+#---------requestType----------#
 CREATE_ACCOUNT = "CREATE_ACCOUNT"
 LOGIN = "LOGIN"
 EDIT_PROFILE = "EDIT_PROFILE"
@@ -24,13 +18,36 @@ GET_PROFILE = "GET_PROFILE"
 ADD_CART = "ADD_CART"
 REMOVE_CART = "REMOVE_CART"
 GET_CART = "GET_CART"
+#-----------------------------#
+
+#-----------Response from server-------------#
+RESPONSE = "response"
+FNAME = "fname"
+LNAME = "lname"
+EMAIL = "email"
+BDATE = "bdate"
+COUNTRY = "country"
+CITY = "city"
+JOB = "job"
+CASH = "cash"
+STOCK = "stock"
+ITEMS = "items"
+#--------------------------------------------#
+
+#------------Initialize client socket-----------#
+HEADER = 64
+PORT = 5050
+FORMAT = 'utf-8'
+SERVER = "192.168.1.13"
+ADDR = (SERVER, PORT)
+
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(ADDR)
+#-----------------------------------------------#
 
 class Socket:
-    __email = ""
-    def __init__(self,email):
-        self.__email = email
+    __email = "user@email.com"
+
     def __customDecoder(Dict):
         return namedtuple('X', Dict.keys())(*Dict.values())
 
@@ -50,6 +67,10 @@ class Socket:
         msg = client.recv(msg_length).decode(FORMAT)
         print("Message Received:" + msg)
         return json.loads(msg, object_hook=Socket.__customDecoder)
+
+    @staticmethod
+    def login(email):
+        Socket.__email = email
 
     @staticmethod
     def requestServer(requestType,message):
@@ -79,12 +100,12 @@ class Socket:
             message["email"] = Socket.__email
             message["request"] = DEPOSIT
             Socket.__send(message)
-            #{"balance":"3500"}
+            #{"cash":"3500"}
         elif requestType == BUY:
             message["email"] = Socket.__email
             message["request"] = BUY
             Socket.__send(message)
-            #{"response":"OK","balance":"3000"} -> successful buy / {"response":"NO","items":[]}  -> not enough in stock
+            #{"response":"OK","cash":"3000"} -> successful buy / {"response":"NO","items":[]}  -> not enough in stock
         elif requestType == ADD_CART:
             message["email"] = Socket.__email
             message["request"] = ADD_CART
@@ -99,12 +120,12 @@ class Socket:
             message["email"] = Socket.__email
             message["request"] = GET_CART
             Socket.__send(message)
-            #
+            #{"items":[]}
         elif requestType == GET_BALANCE:
             message["email"] = Socket.__email
             message["request"] = GET_BALANCE
             Socket.__send(message)
-            #{"balance":"3500"}
+            #{"cash":"3500"}
         elif requestType == GET_ITEMS:
             get_items = {"request":"GET_ITEMS"}
             Socket.__send(get_items)
