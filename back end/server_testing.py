@@ -167,3 +167,38 @@ dicto = {'email': 'ahmedayman58134@gmail.com'}
 dicto['request'] = GET_CART
 json_obj = json.dumps(dicto)
 send(json_obj)
+
+#                                                                               PURCHASE
+
+#add item
+input()
+name = 'mouse'
+description = 'this is the best mouse'
+dicto = {'email': 'ahmedayman58134@gmail.com', 'name': name, 'description': description}
+dicto['request'] = ADD_ITEM
+json_obj = json.dumps(dicto)
+send(json_obj)
+
+#purchase item
+input()
+name = 'mouse'
+description = 'this is the best mouse'
+quantity = 10
+dicto = {'email': 'ahmedayman58134@gmail.com', 'name': name, 'description': description, 'quantity': quantity}
+dicto['request'] = PURCHASE
+json_obj = json.dumps(dicto)
+send(json_obj)
+
+#GetCart
+input()
+dicto = {'email': 'ahmedayman58134@gmail.com'}
+dicto['request'] = GET_CART
+json_obj = json.dumps(dicto)
+send(json_obj)
+
+#history
+input()
+dicto = {'email': 'ahmedayman58134@gmail.com'}
+dicto['request'] = HISTORY
+json_obj = json.dumps(dicto)
+send(json_obj)

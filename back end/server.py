@@ -64,13 +64,12 @@ def convertToBinaryData(filename):
     file = open(filename, 'rb')
     binaryData = file.read()
     return binaryData
-#----------------------------------------------------------------------------------------------------------------------
+
 def write_file(data, filename):
     # Convert binary data to proper format and write it on Hard Disk
     file = open(filename, 'wb')
     file.write(data)
 
-#----------------------------------------------------------------------------------------------------------------------
 def send(json_obj, conn, addr):
     msg_to_send = json_obj.encode(FORMAT)
     msg_length = len(msg_to_send)
@@ -79,14 +78,14 @@ def send(json_obj, conn, addr):
     conn.send(send_length)
     conn.send(msg_to_send)
     # server.send() ? bcz con is between the client that send
-#----------------------------------------------------------------------------------------------------------------------
+
 def send_pickle(pickle_obj, conn, addr):
     msg_length = len(pickle_obj)
     send_length = str(len(pickle_obj)).encode(FORMAT)
     send_length += b' ' * (HEADER - len(send_length))
     conn.send(send_length)
     conn.send(pickle_obj)
-#----------------------------------------------------------------------------------------------------------------------
+
 def login(dataobj, conn, addr):
     email = dataobj['email']
     password = dataobj['password'] #string
@@ -108,7 +107,7 @@ def login(dataobj, conn, addr):
         dicto = {"response": "This Account Doesnt exist"}
         json_obj = json.dumps(dicto) #
         send(json_obj, conn, addr)
-#----------------------------------------------------------------------------------------------------------------------        
+
 def signup(dataobj, conn, addr):
     email = dataobj['email']
     password = dataobj['password']
@@ -150,7 +149,7 @@ def signup(dataobj, conn, addr):
         send(json_obj, conn, addr)
         mydb.commit()
     #store hashed
-#----------------------------------------------------------------------------------------------------------------------
+
 def getItems(dataobj, conn, addr):
     email = dataobj['email']
     mycursor.execute("""SELECT * FROM ITEM
@@ -165,7 +164,7 @@ def getItems(dataobj, conn, addr):
     dicto = {'items': list_of_tubles, 'msg': 'img'}
     json_obj = pickle.dumps(dicto)
     send_pickle(json_obj, conn, addr)
-#----------------------------------------------------------------------------------------------------------------------
+
 def getBalance(dataobj, conn, addr):
     email = dataobj['email']
     mycursor.execute(f"""SELECT CASH FROM USER
@@ -176,7 +175,7 @@ def getBalance(dataobj, conn, addr):
     json_obj = json.dumps(dicto)
     send(json_obj, conn, addr)
 
-#----------------------------------------------------------------------------------------------------------------------
+
 def addToCart(data_obj, conn, addr):
     email = data_obj['email']
     name = data_obj['name'] # name - description
@@ -214,7 +213,7 @@ def addToCart(data_obj, conn, addr):
 #                              WHERE PURCHID = '{purchases_id}'
 # """)
 #         purchases_lock.release()
-#----------------------------------------------------------------------------------------------------------------------
+
 def deleteFromCart(data_obj, conn, addr):
     email = data_obj['email']
     name = data_obj['name']
@@ -235,7 +234,7 @@ def deleteFromCart(data_obj, conn, addr):
     dicto = {'response': "OK"}
     json_obj = json.dumps(dicto)
     send(json_obj, conn, addr)
-#----------------------------------------------------------------------------------------------------------------------    
+
 def getCart(data_obj, conn, addr):
     email = data_obj['email']
     mycursor.execute(f"""SELECT ITEM.NAME, ITEM.DESCRIPTION, ITEM.IMAGE, ITEM.PROCESSOR, ITEM.MEMORY, ITEM.STORAGE, ITEM.MANUFACT, ITEM.PRICE, ITEM.STOCK
@@ -247,7 +246,71 @@ def getCart(data_obj, conn, addr):
     dicto = {'items': items, 'msg': cart}
     json_obj = pickle.dumps(dicto)
     send_pickle(json_obj, conn, addr)
-#----------------------------------------------------------------------------------------------------------------------
+
+def purchase(data_obj, conn, addr): #item by item they validate that its valid amount of money and they valid stock number
+    email = data_obj['email']
+    name = data_obj['name']
+    desc = data_obj['description']
+    quantity = data_obj['quantity']
+    date_now = datetime.datetime.now()
+
+    #USER
+    mycursor.execute(f"""SELECT PRICE FROM ITEM
+                         WHERE NAME = '{name}' and DESCRIPTION = '{desc}'
+""")
+    item_price = mycursor.fetchone()[0]
+    total_price = quantity * item_price
+    user_lock.acquire()
+    mycursor.execute(f"""UPDATE USER
+                         SET CASH = CASH - {total_price}
+                         WHERE EMAIL = '{email}'
+""")
+    mydb.commit()
+    user_lock.release()
+
+    #ITEM
+    item_lock.acquire()
+    mycursor.execute(f"""UPDATE ITEM 
+                         SET STOCK = STOCK - {quantity}
+                         WHERE NAME = '{name}' and DESCRIPTION = '{desc}'
+""")
+    mydb.commit()
+    item_lock.release()
+    #ITEMID
+    mycursor.execute(f"""SELECT ITEMID
+                                FROM ITEM, ITEM_IDENTIFIER
+                                WHERE ITEM.NAME = ITEM_IDENTIFIER.NAME and ITEM.DESCRIPTION = ITEM_IDENTIFIER.DESCRIPTION and ITEM.NAME = '{name}' and ITEM.DESCRIPTION = '{desc}'
+            """)
+    itemId = mycursor.fetchone()[0]  # [(), (), (),]
+
+    #PRUCHASE history remove from cart and put in history
+    purchases_lock.acquire()
+    mycursor.execute(f"""UPDATE PURCHASES
+                         SET STATUS = 1, QUANTITY = '{quantity}', TOTALPRICE = '{total_price}', DTIME = '{date_now}'
+                         WHERE EMAIL= '{email}' and ITEMID = '{itemId}' and STATUS = 0
+""")
+    mydb.commit()
+    purchases_lock.release()
+    dicto = {'response': 'OK'}
+    json_obj = json.dumps(dicto)
+    send(json_obj, conn, addr)
+
+def history(data_obj, conn, addr):
+    email = data_obj['email']
+    mycursor.execute(f"""SELECT ITEM_IDENTIFIER.NAME, ITEM_IDENTIFIER.DESCRIPTION, PURCHASES.QUANTITY, PURCHASES.DTIME, PURCHASES.TOTALPRICE
+                         FROM USER, ITEM_IDENTIFIER, PURCHASES
+                         WHERE USER.EMAIL = PURCHASES.EMAIL and USER.EMAIL = '{email}' and PURCHASES.ITEMID = ITEM_IDENTIFIER.ITEMID and status = 1
+""")
+    items = mycursor.fetchall()
+    for i in range(len(items)):
+        items[i] = list(items[i])
+        items[i][3] = str(items[i][3])
+        items[i] = tuple(items[i])
+    # print(len(items))
+    dicto = {'items': items}
+    json_obj = json.dumps(dicto)
+    send(json_obj, conn, addr)
+
 
 def start(): #start server and get connection then handle this connection through function like handle_client
     server.listen() #listen for request
