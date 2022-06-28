@@ -18,6 +18,7 @@ GET_PROFILE = "GET_PROFILE"
 ADD_CART = "ADD_CART"
 REMOVE_CART = "REMOVE_CART"
 GET_CART = "GET_CART"
+REQUEST = "request"
 #-----------------------------#
 
 #-----------Response from server-------------#
@@ -80,65 +81,49 @@ class Socket:
 
     @staticmethod
     def requestServer(requestType,message):
-        if requestType == CREATE_ACCOUNT:
-            message["request"] = CREATE_ACCOUNT
-            Socket.__send(message)
-            #{"respone":"OK"} -> successful creation of account / {"respone":"NO"} -> account already exists
-        elif requestType == EDIT_PROFILE:
-            message["request"] = EDIT_PROFILE
-            Socket.__send(message)
-            #{"respone":"OK"} -> successful creation of account / {"respone":"NO"} -> email already exists
-        elif requestType == GET_PROFILE:
-            message["email"] = Socket.__email
-            message["request"] = GET_PROFILE
-            Socket.__send(message)
-            #{"fname":"Ahmed","lname":"Alaa","email":"Ahmed@gmail.com","bdate":"2000\01\01","country":"Egypt","city":"Cairo","job":"Worker","cash":"3000"}
-        elif requestType == LOGIN:
-            message["request"] = LOGIN
-            Socket.__send(message)
-            #{"respone":"OK"} -> succesful login / {"respone":"NO"} -> invalid email or password
-        elif requestType == CHANGE_PASSWORD:
-            message["email"] = Socket.__email
-            message["request"] = CHANGE_PASSWORD
-            Socket.__send(message)
-            #{"response":"OK"} -> acknoweldge
-        elif requestType == DEPOSIT:
-            message["email"] = Socket.__email
-            message["request"] = DEPOSIT
-            Socket.__send(message)
-            #{"cash":"3500"}
-        elif requestType == BUY:
-            message["email"] = Socket.__email
-            message["request"] = BUY
-            Socket.__send(message)
-            #{"response":"OK","cash":"3000"} -> successful buy / {"response":"NO","items":[]}  -> not enough in stock
-        elif requestType == ADD_CART:
-            message["email"] = Socket.__email
-            message["request"] = ADD_CART
-            Socket.__send(message)
-            #{"response":"OK"} -> successfuly added to cart / {"response":"NO","stock":"3"} -> not enough in stock
-        elif requestType == REMOVE_CART:
-            message["email"] = Socket.__email
-            message["request"] = REMOVE_CART
-            Socket.__send(message)
-            #{"response":"OK"} -> successful removal
-        elif requestType == GET_CART:
-            message["email"] = Socket.__email
-            message["request"] = GET_CART
-            Socket.__send(message)
-            #{"items":[]}
-        elif requestType == GET_BALANCE:
-            message["email"] = Socket.__email
-            message["request"] = GET_BALANCE
-            Socket.__send(message)
-            #{"cash":"3500"}
-        elif requestType == GET_ITEMS:
-            get_items = {"request":"GET_ITEMS"}
-            Socket.__send(get_items)
-            #{"items":[]}
+        message[REQUEST] = requestType
+        if requestType == CHANGE_PASSWORD or requestType == DEPOSIT or requestType == ADD_CART or requestType == REMOVE_CART:
+            message[EMAIL] = Socket.__email
+        Socket.__send(message)
+        return Socket.__receive()
+    @staticmethod
+    def requestServer(requestType):
+        message = {REQUEST:requestType}
+        if requestType != GET_ITEMS:
+            message[EMAIL] = Socket.__email
+        Socket.__send(message)
         return Socket.__receive()
 
 
+# if requestType == CREATE_ACCOUNT:
+#     #{"respone":"OK"} -> successful creation of account / {"respone":"NO"} -> account already exists
+# elif requestType == EDIT_PROFILE:
+#     #{"respone":"OK"} -> successful creation of account / {"respone":"NO"} -> email already exists
+# elif requestType == LOGIN:
+#     #{"respone":"OK"} -> succesful login / {"respone":"NO"} -> invalid email or password
+# elif requestType == CHANGE_PASSWORD:
+#     message[EMAIL] = Socket.__email
+#     #{"response":"OK"} -> acknoweldge
+# elif requestType == DEPOSIT:
+#     message[EMAIL] = Socket.__email
+#     #{"cash":"3500"}
+# elif requestType == ADD_CART:
+#     message[EMAIL] = Socket.__email
+#     #{"response":"OK"} -> successfuly added to cart / {"response":"NO","stock":"3"} -> not enough in stock
+# elif requestType == REMOVE_CART:
+#     message[EMAIL] = Socket.__email
+#     #{"response":"OK"} -> successful removal
+
+# if requestType == GET_PROFILE:
+#     #{"fname":"Ahmed","lname":"Alaa","email":"Ahmed@gmail.com","bdate":"2000\01\01","country":"Egypt","city":"Cairo","job":"Worker","cash":"3000"}
+# elif requestType == BUY:
+#     #{"response":"OK","cash":"3000"} -> successful buy / {"response":"NO","items":[]}  -> not enough in stock
+# elif requestType == GET_CART:
+#     #{"items":[]}
+# elif requestType == GET_BALANCE:
+#     #{"cash":"3500"}
+# elif requestType == GET_ITEMS:
+#     #{"items":[]}
 # login = {"email":"Ahmed@gmail.com","password":"Ahmed50"}
 # change_password = {"email":"Ahmed@gmail.com","password":"Ahmed50","new_password":"Ahmed40"}
 # deposit = {"email":"Ahmed@gmail.com","amount":"500"}
