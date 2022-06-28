@@ -177,6 +177,43 @@ def getBalance(dataobj, conn, addr):
     send(json_obj, conn, addr)
 
 
+def addToCart(data_obj, conn, addr):
+    email = data_obj['email']
+    name = data_obj['name'] # name - description
+    desc = data_obj['description']
+
+    # join item -> item_identifier to get itemID and insert into purchase
+    mycursor.execute(f"""SELECT ITEMID
+                        FROM ITEM, ITEM_IDENTIFIER
+                        WHERE ITEM.NAME = ITEM_IDENTIFIER.NAME and ITEM.DESCRIPTION = ITEM_IDENTIFIER.DESCRIPTION and ITEM.NAME = '{name}' and ITEM.DESCRIPTION = '{desc}'
+    """)
+    itemId = mycursor.fetchone()[0] # [(), (), (),]
+
+    mycursor.execute(f"""SELECT PURCHID FROM PURCHASES
+                         WHERE EMAIL = '{email.lower()}' and ITEMID = '{itemId}' and STATUS = 0
+""")
+    # purchases_id = mycursor.fetchone()[0]
+    if mycursor.rowcount == 0: #insert
+        purchases_lock.acquire()
+        mycursor.execute(f"""INSERT INTO PURCHASES(EMAIL, ITEMID, STATUS) values('{email.lower()}', '{itemId}', 0)
+""")
+        mydb.commit()
+        purchases_lock.release()
+        dicto = {'response': "OK"}  #added to cart
+        json_obj = json.dumps(dicto)
+        send(json_obj, conn, addr)
+    else: #item already in cart
+        dicto = {'response': "NO"} #item already in cart
+        json_obj = json.dumps(dicto)
+        send(json_obj, conn, addr)
+
+#     else: #update + decrease_amount_of_items
+#         purchases_lock.acquire()
+#         mycursor.execute(f"""UPDATE PURCHASES
+#                              SET QUANTITY = QUANTITY + '{quantity}'
+#                              WHERE PURCHID = '{purchases_id}'
+# """)
+#         purchases_lock.release()
 
 
 def start(): #start server and get connection then handle this connection through function like handle_client
