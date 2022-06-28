@@ -175,6 +175,18 @@ def getBalance(dataobj, conn, addr):
     json_obj = json.dumps(dicto)
     send(json_obj, conn, addr)
 
+def deposit(data_obj, conn, addr):
+    email = data_obj['email']
+    amount = int(data_obj['amount'])
+    user_lock.acquire()
+    mycursor.execute(f"""UPDATE USER
+                        SET CASH = CASH + '{amount}'
+                        WHERE EMAIL = '{email.lower()}'
+    """)
+    mydb.commit()
+    user_lock.release()
+    #send cash
+    getBalance(data_obj, conn, addr)
 
 def addToCart(data_obj, conn, addr):
     email = data_obj['email']

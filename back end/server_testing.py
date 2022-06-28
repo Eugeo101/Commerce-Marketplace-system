@@ -126,6 +126,14 @@ dicto['request'] = GET_ITEMS
 json_obj = json.dumps(dicto)
 send(json_obj)
 
+#edit deposit
+input()
+email = "ahmedayman58134@gmail.com" #
+dicto = {'email': email, 'amount': '500'}
+dicto['request'] = DEPOSIT
+json_obj = json.dumps(dicto)
+send(json_obj)
+
 #add_item
 input()
 name ='laptop'
