@@ -166,6 +166,16 @@ def getItems(dataobj, conn, addr):
     json_obj = pickle.dumps(dicto)
     send_pickle(json_obj, conn, addr)
 
+def getBalance(dataobj, conn, addr):
+    email = dataobj['email']
+    mycursor.execute(f"""SELECT CASH FROM USER
+                        WHERE EMAIL = '{email.lower()}'
+    """)
+    data_obj = mycursor.fetchone()[0] #(3500, )
+    dicto = {'balance': str(data_obj)}
+    json_obj = json.dumps(dicto)
+    send(json_obj, conn, addr)
+
 
 
 
