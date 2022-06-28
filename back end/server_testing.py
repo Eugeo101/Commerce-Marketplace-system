@@ -134,3 +134,12 @@ dicto = {'email': 'ahmedayman58134@gmail.com', 'name': name, 'description': desc
 dicto['request'] = ADD_ITEM
 json_obj = json.dumps(dicto)
 send(json_obj)
+
+#add item
+input()
+name = 'mouse'
+description = 'this is the best mouse'
+dicto = {'email': 'ahmedayman58134@gmail.com', 'name': name, 'description': description}
+dicto['request'] = ADD_ITEM
+json_obj = json.dumps(dicto)
+send(json_obj)
