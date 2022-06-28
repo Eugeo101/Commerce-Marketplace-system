@@ -75,6 +75,29 @@ def send_pickle(pickle_obj, conn, addr):
     conn.send(send_length)
     conn.send(pickle_obj)
 
+def login(dataobj, conn, addr):
+    email = dataobj['email']
+    password = dataobj['password'] #string
+    hashed = hashlib.md5(password.encode('UTF-8')).hexdigest() #128 bit => 32 char
+    #get from database
+    mycursor.execute(f"""SELECT PASSWORD FROM USER
+                        WHERE EMAIL = '{email.lower()}'
+    """)
+    if (mycursor.rowcount > 0): #email exsist check password
+        if hashed == str(mycursor.fetchone()[0]): #if password exist send object
+            dicto = {"response": 'OK'}
+            json_obj = json.dumps(dicto) #JSON
+            send(json_obj, conn, addr)
+        else: #password doesnt exist
+            dicto = {"response": "Password is incorrect"}
+            json_obj = json.dumps(dicto)  # JSON
+            send(json_obj, conn, addr)
+    else: #email doesnt exsist
+        dicto = {"response": "This Account Doesnt exist"}
+        json_obj = json.dumps(dicto) #
+        send(json_obj, conn, addr)
+
+
 
 
 

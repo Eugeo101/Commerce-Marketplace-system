@@ -76,3 +76,28 @@ def send(msg): #"Ahmed" => [bytes bytes bytes bytes] [HEADER msg]
                 response_msg['items'][i][2] = caption + str(i) + ".jpeg"
                 response_msg['items'][i] = tuple(response_msg['items'][i])
             print(f"[SERVER RESPONSE] {response_msg}")  # some number of bytes
+
+#login
+input()
+email = "ahmed.com"
+passwd = "password"
+dicto = {'email': email, 'password': passwd}
+dicto['request'] = LOGIN
+json_obj = json.dumps(dicto) #dumps: convert to json
+send(json_obj)
+
+input()
+email = "ahmed.com"
+passwd = "password1"
+dicto = {'email': email, 'password': passwd}
+dicto['request'] = LOGIN
+json_obj = json.dumps(dicto)
+send(json_obj)
+
+input()
+email = "ergrehthrhncvhgfdhsehth.com"
+passwd = "password1"
+dicto = {'email': email, 'password': passwd}
+dicto['request'] = LOGIN
+json_obj = json.dumps(dicto)
+send(json_obj)
