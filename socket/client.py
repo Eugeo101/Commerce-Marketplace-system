@@ -80,6 +80,10 @@ class Socket:
         Socket.__email = email
 
     @staticmethod
+    def getEmail():
+        return Socket.__email
+
+    @staticmethod
     def requestServer(requestType,message):
         message[REQUEST] = requestType
         if requestType == CHANGE_PASSWORD or requestType == DEPOSIT or requestType == ADD_CART or requestType == REMOVE_CART:
