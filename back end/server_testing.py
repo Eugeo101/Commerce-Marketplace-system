@@ -101,3 +101,18 @@ dicto = {'email': email, 'password': passwd}
 dicto['request'] = LOGIN
 json_obj = json.dumps(dicto)
 send(json_obj)
+
+#signup
+input()
+ahmed = User("Ahmedayman58134@gmail.com")
+ahmed.password = 'Ahmedate123'
+ahmed.fname = "Ahmed"
+ahmed.lname = "Ayman"
+ahmed.bdate = "2000-01-07"
+ahmed.country = "Egypt"
+ahmed.city = "cairo"
+ahmed.job = "Enginner"
+dicto = ahmed.__dict__
+dicto['request'] = CREATE_ACCOUNT
+json_obj = json.dumps(ahmed.__dict__) #convert to dictionary to be converted to json
+send(json_obj)

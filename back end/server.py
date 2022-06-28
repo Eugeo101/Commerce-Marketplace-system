@@ -96,6 +96,48 @@ def login(dataobj, conn, addr):
         dicto = {"response": "This Account Doesnt exist"}
         json_obj = json.dumps(dicto) #
         send(json_obj, conn, addr)
+        
+def signup(dataobj, conn, addr):
+    email = dataobj['email']
+    password = dataobj['password']
+    fName = dataobj['fname']
+    lName = dataobj['lname']
+    bDate = dataobj['bdate'] #'2022-01-18'
+    country = dataobj['country']
+    country = country[0].upper() + country[1:].lower()
+    city = dataobj['city'].lower()
+    job = dataobj['job']
+    password = hashlib.md5(password.encode('UTF-8')).hexdigest()
+
+    #validation
+    #email is unique  USER(EMAIL, FNAME, LNAME, PASSWORD, BDATE, COUNTRY, CITY, JOB, CASH)
+    mycursor.execute(f"""SELECT EMAIL FROM USER
+                        WHERE EMAIL = '{email.lower()}'
+    """)
+    if (mycursor.rowcount > 0): #Account already exist
+        result = mycursor.fetchone()
+        dicto = {"response": "NO"} #Account already exist
+        json_obj = json.dumps(dicto)  # JSON
+        send(json_obj, conn, addr)
+    else:  #Doesnt exist
+        mycursor.execute(f"""SELECT city FROM LOC
+                                     WHERE city = '{city}'
+        """)
+        if mycursor.rowcount == 0:
+            loc_lock.acquire()
+            mycursor.execute(f"INSERT INTO LOC values('{city}', {country}')")
+            mydb.commit()
+            loc_lock.release()
+        user_lock.acquire()
+        mycursor.execute(f"INSERT INTO USER values('{email.lower()}', '{fName}', '{lName}', '{password}', '{bDate}', '{city}', '{job}', '0')")
+        mydb.commit()
+        user_lock.release()
+
+        dicto = {"response": "OK"} #Account registered
+        json_obj = json.dumps(dicto)  # JSON
+        send(json_obj, conn, addr)
+        mydb.commit()
+    #store hashed
 
 
 
