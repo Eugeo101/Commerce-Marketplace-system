@@ -116,3 +116,12 @@ dicto = ahmed.__dict__
 dicto['request'] = CREATE_ACCOUNT
 json_obj = json.dumps(ahmed.__dict__) #convert to dictionary to be converted to json
 send(json_obj)
+
+
+# get items
+input()
+email = "ahmedayman58134@gmail.com" #
+dicto = {'email': email}
+dicto['request'] = GET_ITEMS
+json_obj = json.dumps(dicto)
+send(json_obj)

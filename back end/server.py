@@ -58,6 +58,18 @@ GET_CART = "GET_CART"
 PURCHASE = "PURCHASE"
 HISTORY = "HISTORY"
 
+#For read and write image data
+def convertToBinaryData(filename):
+    # Convert digital data to binary format
+    file = open(filename, 'rb')
+    binaryData = file.read()
+    return binaryData
+
+def write_file(data, filename):
+    # Convert binary data to proper format and write it on Hard Disk
+    file = open(filename, 'wb')
+    file.write(data)
+
 
 def send(json_obj, conn, addr):
     msg_to_send = json_obj.encode(FORMAT)
@@ -139,7 +151,20 @@ def signup(dataobj, conn, addr):
         mydb.commit()
     #store hashed
 
-
+def getItems(dataobj, conn, addr):
+    email = dataobj['email']
+    mycursor.execute("""SELECT * FROM ITEM
+    """)
+    list_of_tubles = mycursor.fetchall()
+    """[
+    item0 ("AHMED", "AYMAN",), dicto['items'][i][0]
+    (),
+    ()
+    ]
+    """
+    dicto = {'items': list_of_tubles, 'msg': 'img'}
+    json_obj = pickle.dumps(dicto)
+    send_pickle(json_obj, conn, addr)
 
 
 
