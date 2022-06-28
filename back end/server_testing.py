@@ -134,6 +134,21 @@ dicto['request'] = DEPOSIT
 json_obj = json.dumps(dicto)
 send(json_obj)
 
+#editProfile
+input()
+dicto = {"fname":"Adham", "lname":"Mohamed", "email": 'ahmedayman58134@gmail.com',"bdate":"2000-07-01", "country":"Egypt", "city":"Alex", "job":"Worker"}
+dicto['request'] = EDIT_PROFILE
+json_obj = json.dumps(dicto)
+send(json_obj)
+
+#getProfile
+input()
+email = "ahmedayman58134@gmail.com" #
+dicto = {'email': email}
+dicto['request'] = GET_PROFILE
+json_obj = json.dumps(dicto)
+send(json_obj)
+
 #add_item
 input()
 name ='laptop'

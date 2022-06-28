@@ -188,6 +188,49 @@ def deposit(data_obj, conn, addr):
     #send cash
     getBalance(data_obj, conn, addr)
 
+    def getProfile(data_obj, conn, addr):
+    email = data_obj['email']
+    mycursor.execute(f"""SELECT EMAIL, FNAME, LNAME, BDATE, USER.CITY, LOC.COUNTRY, JOB, CASH
+                        FROM USER, LOC
+                        WHERE USER.CITY = LOC.CITY and EMAIL = '{email.lower()}'
+    """)
+    data_obj = mycursor.fetchone()
+    # date = datetime.date(5)
+    # date_now = datetime.date(data_obj[3])
+    bdate = str(data_obj[3])
+    dicto = {'email': data_obj[0], 'fname': data_obj[1], 'lname': data_obj[2], 'bdate': bdate, 'city': data_obj[4], 'country': data_obj[5], 'job': data_obj[6], 'cash': data_obj[7] }
+    json_obj = json.dumps(dicto)
+    send(json_obj, conn, addr)
+
+def editProfile(dataobj, conn, addr):
+    email = dataobj['email']
+    fName = dataobj['fname']
+    lName = dataobj['lname']
+    bDate = dataobj['bdate']  # '2022-01-18'
+    country = dataobj['country']
+    city = dataobj['city']
+    job = dataobj['job']
+    #insert loc
+    mycursor.execute(f"""SELECT city FROM LOC
+                         WHERE city = '{city}'
+            """)
+    if mycursor.rowcount == 0:
+        loc_lock.acquire()
+        mycursor.execute(f"INSERT INTO LOC values('{city}', '{country}')")
+        mydb.commit()
+        loc_lock.release()
+    #update user
+    user_lock.acquire()
+    mycursor.execute(f"""UPDATE USER
+                        SET FNAME = '{fName}', LNAME = '{lName}', BDATE = '{bDate}', CITY = '{city}', JOB = '{job}'
+                        WHERE EMAIL = '{email.lower()}'
+    """)
+    mydb.commit()
+    user_lock.release()
+    dicto = {'response': "OK"}
+    json_obj = json.dumps(dicto)
+    send(json_obj, conn, addr)
+
 def addToCart(data_obj, conn, addr):
     email = data_obj['email']
     name = data_obj['name'] # name - description
