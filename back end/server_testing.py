@@ -235,3 +235,13 @@ dicto = {'email': 'ahmedayman58134@gmail.com'}
 dicto['request'] = HISTORY
 json_obj = json.dumps(dicto)
 send(json_obj)
+
+#add item and it's identifier
+input()
+path = "C:\\3rd Electrical Computer AI\\2nd term\\Parallel and Distributed Systems\\project\\server\\assests\\Image1.jpeg"
+dicto = {'image': path}
+dicto['request'] = 'Add_Item'
+json_obj = json.dumps(dicto)
+send(json_obj)
+
+send(DISCONNECT_MESSAGE)

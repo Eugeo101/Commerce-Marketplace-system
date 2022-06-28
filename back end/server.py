@@ -188,7 +188,7 @@ def deposit(data_obj, conn, addr):
     #send cash
     getBalance(data_obj, conn, addr)
 
-    def getProfile(data_obj, conn, addr):
+def getProfile(data_obj, conn, addr):
     email = data_obj['email']
     mycursor.execute(f"""SELECT EMAIL, FNAME, LNAME, BDATE, USER.CITY, LOC.COUNTRY, JOB, CASH
                         FROM USER, LOC
@@ -392,6 +392,30 @@ def history(data_obj, conn, addr):
     dicto = {'items': items}
     json_obj = json.dumps(dicto)
     send(json_obj, conn, addr)
+
+def addItem(data_obj, conn, addr):
+    path = data_obj['image']
+    image_blob = convertToBinaryData(path)
+    item_lock.acquire()
+    sql_insert_blob_query = """INSERT INTO ITEM VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+    name = 'laptop'
+    desc = 'this is the best laptop'
+    proc = 'dell'
+    mem = 'dell'
+    storage = 'dell'
+    manfac = 'dell'
+    price = 50
+    stock = 50
+    insert_blob_tuple = (name, desc, image_blob, proc, mem, storage, manfac, price, stock)
+    mycursor.execute(sql_insert_blob_query, insert_blob_tuple)
+    mydb.commit()
+    item_lock.release()
+    #insert item_identifier
+    item_lock.acquire()
+    mycursor.execute(f"""INSERT INTO ITEM_IDENTIFIER(NAME, DESCRIPTION) values('{name}', '{desc}')
+    """)
+    mydb.commit()
+    item_lock.release()
 
 
 def start(): #start server and get connection then handle this connection through function like handle_client
