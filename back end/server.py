@@ -64,13 +64,13 @@ def convertToBinaryData(filename):
     file = open(filename, 'rb')
     binaryData = file.read()
     return binaryData
-
+#----------------------------------------------------------------------------------------------------------------------
 def write_file(data, filename):
     # Convert binary data to proper format and write it on Hard Disk
     file = open(filename, 'wb')
     file.write(data)
 
-
+#----------------------------------------------------------------------------------------------------------------------
 def send(json_obj, conn, addr):
     msg_to_send = json_obj.encode(FORMAT)
     msg_length = len(msg_to_send)
@@ -79,14 +79,14 @@ def send(json_obj, conn, addr):
     conn.send(send_length)
     conn.send(msg_to_send)
     # server.send() ? bcz con is between the client that send
-
+#----------------------------------------------------------------------------------------------------------------------
 def send_pickle(pickle_obj, conn, addr):
     msg_length = len(pickle_obj)
     send_length = str(len(pickle_obj)).encode(FORMAT)
     send_length += b' ' * (HEADER - len(send_length))
     conn.send(send_length)
     conn.send(pickle_obj)
-
+#----------------------------------------------------------------------------------------------------------------------
 def login(dataobj, conn, addr):
     email = dataobj['email']
     password = dataobj['password'] #string
@@ -108,7 +108,7 @@ def login(dataobj, conn, addr):
         dicto = {"response": "This Account Doesnt exist"}
         json_obj = json.dumps(dicto) #
         send(json_obj, conn, addr)
-        
+#----------------------------------------------------------------------------------------------------------------------        
 def signup(dataobj, conn, addr):
     email = dataobj['email']
     password = dataobj['password']
@@ -150,7 +150,7 @@ def signup(dataobj, conn, addr):
         send(json_obj, conn, addr)
         mydb.commit()
     #store hashed
-
+#----------------------------------------------------------------------------------------------------------------------
 def getItems(dataobj, conn, addr):
     email = dataobj['email']
     mycursor.execute("""SELECT * FROM ITEM
@@ -165,7 +165,7 @@ def getItems(dataobj, conn, addr):
     dicto = {'items': list_of_tubles, 'msg': 'img'}
     json_obj = pickle.dumps(dicto)
     send_pickle(json_obj, conn, addr)
-
+#----------------------------------------------------------------------------------------------------------------------
 def getBalance(dataobj, conn, addr):
     email = dataobj['email']
     mycursor.execute(f"""SELECT CASH FROM USER
@@ -176,7 +176,7 @@ def getBalance(dataobj, conn, addr):
     json_obj = json.dumps(dicto)
     send(json_obj, conn, addr)
 
-
+#----------------------------------------------------------------------------------------------------------------------
 def addToCart(data_obj, conn, addr):
     email = data_obj['email']
     name = data_obj['name'] # name - description
@@ -214,7 +214,7 @@ def addToCart(data_obj, conn, addr):
 #                              WHERE PURCHID = '{purchases_id}'
 # """)
 #         purchases_lock.release()
-
+#----------------------------------------------------------------------------------------------------------------------
 def deleteFromCart(data_obj, conn, addr):
     email = data_obj['email']
     name = data_obj['name']
@@ -235,7 +235,19 @@ def deleteFromCart(data_obj, conn, addr):
     dicto = {'response': "OK"}
     json_obj = json.dumps(dicto)
     send(json_obj, conn, addr)
-    
+#----------------------------------------------------------------------------------------------------------------------    
+def getCart(data_obj, conn, addr):
+    email = data_obj['email']
+    mycursor.execute(f"""SELECT ITEM.NAME, ITEM.DESCRIPTION, ITEM.IMAGE, ITEM.PROCESSOR, ITEM.MEMORY, ITEM.STORAGE, ITEM.MANUFACT, ITEM.PRICE, ITEM.STOCK
+                         FROM USER, PURCHASES, ITEM, ITEM_IDENTIFIER
+                         WHERE STATUS = 0 and USER.EMAIL =  PURCHASES.EMAIL and USER.EMAIL = '{email}' and PURCHASES.ITEMID = ITEM_IDENTIFIER.ITEMID and ITEM_IDENTIFIER.NAME = ITEM.NAME and ITEM_IDENTIFIER.DESCRIPTION = ITEM.DESCRIPTION
+""")
+    items = mycursor.fetchall() #
+    cart = 'cart'
+    dicto = {'items': items, 'msg': cart}
+    json_obj = pickle.dumps(dicto)
+    send_pickle(json_obj, conn, addr)
+#----------------------------------------------------------------------------------------------------------------------
 
 def start(): #start server and get connection then handle this connection through function like handle_client
     server.listen() #listen for request
