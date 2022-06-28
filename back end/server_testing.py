@@ -143,3 +143,12 @@ dicto = {'email': 'ahmedayman58134@gmail.com', 'name': name, 'description': desc
 dicto['request'] = ADD_ITEM
 json_obj = json.dumps(dicto)
 send(json_obj)
+
+#RemoveCart
+input()
+name ='laptop'
+desc = 'this is the best laptop'
+dicto = {'email': 'ahmedayman58134@gmail.com', 'name': name, 'description': desc}
+dicto['request'] = REMOVE_ITEM
+json_obj = json.dumps(dicto)
+send(json_obj)

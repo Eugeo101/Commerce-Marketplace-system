@@ -215,6 +215,27 @@ def addToCart(data_obj, conn, addr):
 # """)
 #         purchases_lock.release()
 
+def deleteFromCart(data_obj, conn, addr):
+    email = data_obj['email']
+    name = data_obj['name']
+    desc = data_obj['description']
+
+    # join item -> item_identifier to get itemID and insert into purchase
+    mycursor.execute(f"""SELECT ITEMID
+                            FROM ITEM, ITEM_IDENTIFIER
+                            WHERE ITEM.NAME = ITEM_IDENTIFIER.NAME and ITEM.DESCRIPTION = ITEM_IDENTIFIER.DESCRIPTION and ITEM.NAME = '{name}' and ITEM.DESCRIPTION = '{desc}'
+        """)
+    itemId = mycursor.fetchone()[0]  # [(), (), (),]
+    purchases_lock.acquire()
+    mycursor.execute(f"""DELETE FROM PURCHASES
+                         WHERE EMAIL = '{email.lower()}' and ITEMID = '{itemId}' and STATUS = 0
+    """)
+    mydb.commit()
+    purchases_lock.release()
+    dicto = {'response': "OK"}
+    json_obj = json.dumps(dicto)
+    send(json_obj, conn, addr)
+    
 
 def start(): #start server and get connection then handle this connection through function like handle_client
     server.listen() #listen for request
