@@ -1,24 +1,27 @@
 import re
 import socket
+import pickle
+import os
 import json
 from collections import namedtuple
 from json import JSONEncoder
 from urllib import request
 
 #---------requestType----------#
+REQUEST = "request"
 CREATE_ACCOUNT = "CREATE_ACCOUNT"
 LOGIN = "LOGIN"
 EDIT_PROFILE = "EDIT_PROFILE"
 CHANGE_PASSWORD = "CHANGE_PASSWORD"
 DEPOSIT = "DEPOSIT"
-BUY = "BUY"
+BUY = "PURCHASE"
 GET_BALANCE = "GET_BALANCE"
 GET_ITEMS = "GET_ITEMS"
 GET_PROFILE = "GET_PROFILE"
-ADD_CART = "ADD_CART"
-REMOVE_CART = "REMOVE_CART"
+ADD_CART = "ADD_ITEM"
+REMOVE_CART = "REMOVE_ITEM"
 GET_CART = "GET_CART"
-REQUEST = "request"
+HISTORY = "HISTORY"
 #-----------------------------#
 
 #-----------Response from server-------------#
@@ -36,9 +39,13 @@ ITEMS = "items"
 PASSWORD = "password"
 NEW_PASSWORD = "new_password"
 DEPOSIT_AMOUNT = "amount"
-ITEM_ID = "item_id"
+ITEM_NAME = "name"
+DESCRIPTION  = "description"
+QUANTITY = "quantity"
 OK = "OK"
 NO = "NO"
+INCORRECT_PASSWORD = "Password is incorrect"
+INCORRECT_EMAIL = "This Account Doesnt exist"
 #--------------------------------------------#
 
 #------------Initialize client socket-----------#
@@ -58,6 +65,11 @@ class Socket:
     def __customDecoder(Dict):
         return namedtuple('X', Dict.keys())(*Dict.values())
 
+    def __write_file(data, filename):
+        # Convert binary data to proper format and write it on Hard Disk
+        file = open(filename, 'wb')
+        file.write(data)
+    
     def __send(msg):
         message = json.dumps(msg)
         print("Message Sent:" + msg)
@@ -70,10 +82,34 @@ class Socket:
 
     def __receive():
         msg_length = client.recv(HEADER).decode(FORMAT)
-        msg_length = int(msg_length)
-        msg = client.recv(msg_length).decode(FORMAT)
-        print("Message Received:" + msg)
-        return json.loads(msg, object_hook=Socket.__customDecoder)
+        if msg_length:
+            msg_length = int(msg_length)
+            msg = client.recv(msg_length)
+            try:
+                message = msg.decode(FORMAT)
+                message = json.loads(message, object_hook=Socket.__customDecoder) #json -> dicto
+            except:
+                message = pickle.loads(message)  # json -> dicto
+                directory = "assests"
+                parent_dir = os.getcwd()
+                path = os.path.join(parent_dir, directory)
+                if (os.path.exists(path) == False):
+                    # create folder
+                    os.mkdir(path)
+                # mapping bytes -> name
+                caption = 'Image'
+                # print(response_msg)
+                if (message['msg'] == 'cart'):
+                    caption = 'Cart'
+                elif (message['msg'] == 'img'):
+                    caption = 'Image'
+                for i in range(len(message[ITEMS])):
+                    Socket.__write_file(message[ITEMS][i][2],f"{path}\\" + caption + str(i) + ".jpeg")
+                    message[ITEMS][i] = list(message[ITEMS][i])
+                    message[ITEMS][i][2] = caption + str(i) + ".jpeg"
+                    message[ITEMS][i] = tuple(message[ITEMS][i])
+            print("Message Received:" + message)
+            return message
 
     @staticmethod
     def login(email):
@@ -86,17 +122,14 @@ class Socket:
     @staticmethod
     def requestServer(requestType,message):
         message[REQUEST] = requestType
-        if requestType == CHANGE_PASSWORD or requestType == DEPOSIT or requestType == ADD_CART or requestType == REMOVE_CART:
+        if requestType == GET_PROFILE or requestType == CHANGE_PASSWORD or requestType == DEPOSIT or requestType == ADD_CART or requestType == REMOVE_CART or requestType == GET_CART or requestType == GET_BALANCE or requestType == HISTORY:
             message[EMAIL] = Socket.__email
         Socket.__send(message)
         return Socket.__receive()
     @staticmethod
     def requestServer(requestType):
-        message = {REQUEST:requestType}
-        if requestType != GET_ITEMS:
-            message[EMAIL] = Socket.__email
-        Socket.__send(message)
-        return Socket.__receive()
+        message = {}
+        return Socket.requestServer(requestType,message)
 
 
 # if requestType == CREATE_ACCOUNT:
