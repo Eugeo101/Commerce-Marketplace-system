@@ -231,6 +231,33 @@ def editProfile(dataobj, conn, addr):
     json_obj = json.dumps(dicto)
     send(json_obj, conn, addr)
 
+def passChange(data_obj, conn, addr):
+    email = data_obj['email']
+    old_pass = data_obj['password']
+    new_pass = data_obj['new_password']
+    hashed = hashlib.md5(old_pass.encode('UTF-8')).hexdigest()
+    hashed_new = hashlib.md5(new_pass.encode('UTF-8')).hexdigest()
+    mycursor.execute(f"""SELECT PASSWORD FROM USER
+                         WHERE EMAIL = '{email.lower()}'
+    """)
+    #check old = saved_pass
+    data_obj = mycursor.fetchone()
+    if (hashed == data_obj[0]): #password is correct so update
+        user_lock.acquire()
+        mycursor.execute(f"""UPDATE USER
+                             SET PASSWORD = '{hashed_new}'
+                             WHERE EMAIL = '{email.lower()}'
+""")
+        mydb.commit()
+        user_lock.release()
+        dicto = {'response': 'OK'}
+        json_obj = json.dumps(dicto)
+        send(json_obj, conn, addr)
+    else: #password is incorrect
+        dicto = {'response': 'NO'}
+        json_obj = json.dumps(dicto)
+        send(json_obj, conn, addr)
+
 def addToCart(data_obj, conn, addr):
     email = data_obj['email']
     name = data_obj['name'] # name - description

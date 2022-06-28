@@ -149,6 +149,16 @@ dicto['request'] = GET_PROFILE
 json_obj = json.dumps(dicto)
 send(json_obj)
 
+#password
+input()
+email = "ahmed.com" #
+old_pass = "password" #
+new_pass = "Ahmedate123" #
+dicto = {'email': email, 'password': old_pass, 'new_password': new_pass}
+dicto['request'] = CHANGE_PASSWORD
+json_obj = json.dumps(dicto)
+send(json_obj)
+
 #add_item
 input()
 name ='laptop'
