@@ -1,4 +1,4 @@
-# parralel-project
+# parallel-project
 
 This is an application where an interaction between clients and a server as a centralized client-server architecture, where:
 
