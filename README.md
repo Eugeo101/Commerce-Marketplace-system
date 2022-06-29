@@ -30,4 +30,5 @@ This is an application where an interaction between clients and a server as a ce
 ### How a client connects to the server
 Each client sends a request message to the server (using sockets), the server accepts the client message and create a connection by creating a thread to handle each client, and the connection doesn't close until the client send a disconnection message to the server.
 
+### Database Used:
 items and user info. and user purchases history and user cart are stored in database using SQL
