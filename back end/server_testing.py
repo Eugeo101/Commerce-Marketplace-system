@@ -44,7 +44,9 @@ def send(msg): #"Ahmed" => [bytes bytes bytes bytes] [HEADER msg]
     client.send(send_length) # to send header
     client.send(message) #massage
 
-    #client recive response from server
+
+#client recive response from server
+def receive():
     response_length = client.recv(HEADER).decode(FORMAT) #'4'
     if response_length:
         response_length = int(response_length) #4
@@ -53,6 +55,7 @@ def send(msg): #"Ahmed" => [bytes bytes bytes bytes] [HEADER msg]
             response_msg_json = response_msg.decode(FORMAT) #json
             response_msg_json = json.loads(response_msg_json) #json -> dicto
             print(f"[SERVER RESPONSE] {response_msg_json}")  # some number of bytes
+            return response_msg_json
         except:
             response_msg = pickle.loads(response_msg)  # json -> dicto
             directory = "assests"
@@ -76,6 +79,7 @@ def send(msg): #"Ahmed" => [bytes bytes bytes bytes] [HEADER msg]
                 response_msg['items'][i][2] = caption + str(i) + ".jpeg"
                 response_msg['items'][i] = tuple(response_msg['items'][i])
             print(f"[SERVER RESPONSE] {response_msg}")  # some number of bytes
+            return response_msg
 
 #login
 input()
@@ -85,6 +89,8 @@ dicto = {'email': email, 'password': passwd}
 dicto['request'] = LOGIN
 json_obj = json.dumps(dicto) #dumps: convert to json
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 input()
 email = "ahmed.com"
@@ -93,6 +99,8 @@ dicto = {'email': email, 'password': passwd}
 dicto['request'] = LOGIN
 json_obj = json.dumps(dicto)
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 input()
 email = "ergrehthrhncvhgfdhsehth.com"
@@ -101,6 +109,8 @@ dicto = {'email': email, 'password': passwd}
 dicto['request'] = LOGIN
 json_obj = json.dumps(dicto)
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 #signup
 input()
@@ -116,6 +126,8 @@ dicto = ahmed.__dict__
 dicto['request'] = CREATE_ACCOUNT
 json_obj = json.dumps(ahmed.__dict__) #convert to dictionary to be converted to json
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 
 # get items
@@ -125,6 +137,8 @@ dicto = {'email': email}
 dicto['request'] = GET_ITEMS
 json_obj = json.dumps(dicto)
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 #edit deposit
 input()
@@ -133,6 +147,8 @@ dicto = {'email': email, 'amount': '500'}
 dicto['request'] = DEPOSIT
 json_obj = json.dumps(dicto)
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 #editProfile
 input()
@@ -140,6 +156,8 @@ dicto = {"fname":"Adham", "lname":"Mohamed", "email": 'ahmedayman58134@gmail.com
 dicto['request'] = EDIT_PROFILE
 json_obj = json.dumps(dicto)
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 #getProfile
 input()
@@ -148,6 +166,8 @@ dicto = {'email': email}
 dicto['request'] = GET_PROFILE
 json_obj = json.dumps(dicto)
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 #password
 input()
@@ -158,6 +178,8 @@ dicto = {'email': email, 'password': old_pass, 'new_password': new_pass}
 dicto['request'] = CHANGE_PASSWORD
 json_obj = json.dumps(dicto)
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 #search
 input()
@@ -165,6 +187,8 @@ dicto = {'name': 'mouse'}
 dicto['request'] = SEARCH
 json_obj = json.dumps(dicto)
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 #add_item
 input()
@@ -174,6 +198,8 @@ dicto = {'email': 'ahmedayman58134@gmail.com', 'name': name, 'description': desc
 dicto['request'] = ADD_ITEM
 json_obj = json.dumps(dicto)
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 #add item
 input()
@@ -183,6 +209,8 @@ dicto = {'email': 'ahmedayman58134@gmail.com', 'name': name, 'description': desc
 dicto['request'] = ADD_ITEM
 json_obj = json.dumps(dicto)
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 
 #GetCart
@@ -191,6 +219,8 @@ dicto = {'email': 'ahmedayman58134@gmail.com'}
 dicto['request'] = GET_CART
 json_obj = json.dumps(dicto)
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 #RemoveCart
 input()
@@ -200,6 +230,8 @@ dicto = {'email': 'ahmedayman58134@gmail.com', 'name': name, 'description': desc
 dicto['request'] = REMOVE_ITEM
 json_obj = json.dumps(dicto)
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 #GetCart
 input()
@@ -207,6 +239,8 @@ dicto = {'email': 'ahmedayman58134@gmail.com'}
 dicto['request'] = GET_CART
 json_obj = json.dumps(dicto)
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 #                                                                               PURCHASE
 
@@ -218,6 +252,8 @@ dicto = {'email': 'ahmedayman58134@gmail.com', 'name': name, 'description': desc
 dicto['request'] = ADD_ITEM
 json_obj = json.dumps(dicto)
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 #purchase item
 input()
@@ -228,6 +264,8 @@ dicto = {'email': 'ahmedayman58134@gmail.com', 'name': name, 'description': desc
 dicto['request'] = PURCHASE
 json_obj = json.dumps(dicto)
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 #GetCart
 input()
@@ -235,6 +273,8 @@ dicto = {'email': 'ahmedayman58134@gmail.com'}
 dicto['request'] = GET_CART
 json_obj = json.dumps(dicto)
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 #history
 input()
@@ -242,6 +282,8 @@ dicto = {'email': 'ahmedayman58134@gmail.com'}
 dicto['request'] = HISTORY
 json_obj = json.dumps(dicto)
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 #add item and it's identifier
 input()
@@ -250,5 +292,7 @@ dicto = {'image': path}
 dicto['request'] = 'Add_Item'
 json_obj = json.dumps(dicto)
 send(json_obj)
+response_msg = receive()
+print(response_msg)
 
 send(DISCONNECT_MESSAGE)
