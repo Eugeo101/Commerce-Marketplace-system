@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>586</height>
+    <height>590</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -181,16 +181,6 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="bdatein">
-    <property name="geometry">
-     <rect>
-      <x>380</x>
-      <y>240</y>
-      <width>141</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QLabel" name="countrylabel">
     <property name="geometry">
      <rect>
@@ -310,6 +300,42 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QDateEdit" name="bdatein">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>240</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+   </widget>
+   <widget class="QLabel" name="passinfo">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>170</y>
+      <width>21</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="text">
+     <string>X</string>
     </property>
    </widget>
   </widget>

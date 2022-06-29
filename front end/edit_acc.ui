@@ -220,16 +220,6 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QLineEdit" name="bdatein">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>180</y>
-      <width>141</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QPushButton" name="chpassbutton">
     <property name="geometry">
      <rect>
@@ -272,6 +262,21 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QDateEdit" name="bdatein">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>180</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
    </widget>
   </widget>
