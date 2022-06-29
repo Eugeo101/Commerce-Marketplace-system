@@ -4,16 +4,27 @@ This is an application where an interaction between clients and a server as a ce
 
 ## A client (GUI): is a marketplace system where users can:
 1- Create new account.
+
 2- Login.
+
 3- View the items in the system.
+
 4- ADD / EDIT / Remove items from his cart.
+
 5- Search for items.
+
 6- View the account info.
+
 7- Edit the account info.
+
 8- Change the password.
+
 9- Deposit cash.
+
 10- Purchase items.
+
 11- Show the purchase history.
+
 12- View the cart.
 
 ## How a client connects to the server:
