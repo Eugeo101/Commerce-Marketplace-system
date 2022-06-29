@@ -2,7 +2,7 @@
 
 This is an application where an interaction between clients and a server as a centralized client-server architecture, where:
 
-## A client (GUI): is a marketplace system where users can:
+### A client (GUI): is a marketplace system where users can
 1- Create new account.
 
 2- Login.
@@ -27,7 +27,7 @@ This is an application where an interaction between clients and a server as a ce
 
 12- View the cart.
 
-## How a client connects to the server:
+### How a client connects to the server
 Each client sends a request message to the server (using sockets), the server accepts the client message and create a connection by creating a thread to handle each client, and the connection doesn't close until the client send a disconnection message to the server.
 
 items and user info. and user purchases history and user cart are stored in database using SQL
