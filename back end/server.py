@@ -258,6 +258,17 @@ def passChange(data_obj, conn, addr):
         json_obj = json.dumps(dicto)
         send(json_obj, conn, addr)
 
+def searchItems(data_obj, conn, addr):
+    name_key = data_obj['name']
+    mycursor.execute(f"""SELECT * FROM ITEM
+                        WHERE NAME LIKE '{name_key}%' or NAME LIKE '%{name_key}'
+    """)
+    items = mycursor.fetchall()
+    count = len(items) #email[-4:] == '.com'
+    dicto = {'items': items, 'count': count, 'msg': 'search'} # list of tuples = [(1, 2 , 3), (), ()]
+    json_obj = pickle.dumps(dicto)
+    send_pickle(json_obj, conn, addr)
+
 def addToCart(data_obj, conn, addr):
     email = data_obj['email']
     name = data_obj['name'] # name - description

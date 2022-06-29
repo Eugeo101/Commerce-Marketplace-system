@@ -159,6 +159,13 @@ dicto['request'] = CHANGE_PASSWORD
 json_obj = json.dumps(dicto)
 send(json_obj)
 
+#search
+input()
+dicto = {'name': 'mouse'}
+dicto['request'] = SEARCH
+json_obj = json.dumps(dicto)
+send(json_obj)
+
 #add_item
 input()
 name ='laptop'
