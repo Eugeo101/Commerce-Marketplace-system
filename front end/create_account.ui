@@ -6,27 +6,44 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>590</height>
+    <width>739</width>
+    <height>631</height>
    </rect>
+  </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="toolTip">
+   <string/>
+  </property>
+  <property name="toolTipDuration">
+   <number>-1</number>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(226, 226, 226);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="signupbutton">
     <property name="geometry">
      <rect>
-      <x>340</x>
+      <x>290</x>
       <y>430</y>
-      <width>101</width>
-      <height>31</height>
+      <width>151</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <pointsize>11</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 10px;
+color: rgb(255, 255, 255);
+background-color: rgb(85, 170, 127);</string>
     </property>
     <property name="text">
      <string>Sign Up</string>
@@ -35,15 +52,18 @@
    <widget class="QLabel" name="lastnamelabel">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>80</y>
+      <x>210</x>
+      <y>120</y>
       <width>111</width>
       <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>Yu Gothic UI Semibold</family>
       <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="text">
@@ -53,15 +73,18 @@
    <widget class="QLabel" name="firstnamelabel">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>40</y>
+      <x>210</x>
+      <y>80</y>
       <width>101</width>
       <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>Yu Gothic UI Semibold</family>
       <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="text">
@@ -74,15 +97,18 @@
    <widget class="QLabel" name="emaillabel">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>130</y>
+      <x>210</x>
+      <y>40</y>
       <width>131</width>
-      <height>21</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>Yu Gothic UI Semibold</family>
       <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="text">
@@ -95,15 +121,18 @@
    <widget class="QLabel" name="passlabel">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>170</y>
+      <x>210</x>
+      <y>160</y>
       <width>111</width>
-      <height>21</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>Yu Gothic UI Semibold</family>
       <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="text">
@@ -115,13 +144,16 @@
      <rect>
       <x>210</x>
       <y>200</y>
-      <width>161</width>
+      <width>171</width>
       <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>Yu Gothic UI Semibold</family>
       <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="text">
@@ -134,57 +166,77 @@
    <widget class="QLineEdit" name="fnamein">
     <property name="geometry">
      <rect>
-      <x>380</x>
+      <x>390</x>
       <y>40</y>
       <width>141</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;
+background-color: rgb(180, 180, 180);</string>
+    </property>
    </widget>
    <widget class="QLineEdit" name="lnamein">
     <property name="geometry">
      <rect>
-      <x>380</x>
+      <x>390</x>
       <y>80</y>
       <width>141</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;
+background-color: rgb(180, 180, 180);</string>
+    </property>
    </widget>
    <widget class="QLineEdit" name="emailin">
     <property name="geometry">
      <rect>
-      <x>380</x>
+      <x>390</x>
       <y>120</y>
       <width>141</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;
+background-color: rgb(180, 180, 180);</string>
+    </property>
    </widget>
    <widget class="QLineEdit" name="passin">
     <property name="geometry">
      <rect>
-      <x>380</x>
+      <x>390</x>
       <y>160</y>
       <width>141</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;
+background-color: rgb(180, 180, 180);</string>
+    </property>
    </widget>
    <widget class="QLineEdit" name="cpassin">
     <property name="geometry">
      <rect>
-      <x>380</x>
+      <x>390</x>
       <y>200</y>
       <width>141</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;
+background-color: rgb(180, 180, 180);</string>
+    </property>
    </widget>
    <widget class="QLabel" name="countrylabel">
     <property name="geometry">
      <rect>
-      <x>290</x>
+      <x>210</x>
       <y>280</y>
       <width>81</width>
       <height>31</height>
@@ -192,7 +244,10 @@
     </property>
     <property name="font">
      <font>
+      <family>Yu Gothic UI Semibold</family>
       <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="text">
@@ -202,17 +257,21 @@
    <widget class="QLineEdit" name="countryin">
     <property name="geometry">
      <rect>
-      <x>380</x>
+      <x>390</x>
       <y>280</y>
       <width>141</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;
+background-color: rgb(180, 180, 180);</string>
+    </property>
    </widget>
    <widget class="QLabel" name="bdatelabel">
     <property name="geometry">
      <rect>
-      <x>270</x>
+      <x>210</x>
       <y>240</y>
       <width>101</width>
       <height>31</height>
@@ -220,7 +279,10 @@
     </property>
     <property name="font">
      <font>
+      <family>Yu Gothic UI Semibold</family>
       <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="text">
@@ -233,17 +295,21 @@
    <widget class="QLineEdit" name="cityin">
     <property name="geometry">
      <rect>
-      <x>380</x>
+      <x>390</x>
       <y>320</y>
       <width>141</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;
+background-color: rgb(180, 180, 180);</string>
+    </property>
    </widget>
    <widget class="QLabel" name="joblabel">
     <property name="geometry">
      <rect>
-      <x>320</x>
+      <x>210</x>
       <y>360</y>
       <width>41</width>
       <height>31</height>
@@ -251,7 +317,10 @@
     </property>
     <property name="font">
      <font>
+      <family>Yu Gothic UI Semibold</family>
       <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="text">
@@ -261,17 +330,21 @@
    <widget class="QLineEdit" name="jobin">
     <property name="geometry">
      <rect>
-      <x>380</x>
+      <x>390</x>
       <y>360</y>
       <width>141</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;
+background-color: rgb(180, 180, 180);</string>
+    </property>
    </widget>
    <widget class="QLabel" name="citylabel">
     <property name="geometry">
      <rect>
-      <x>320</x>
+      <x>210</x>
       <y>320</y>
       <width>41</width>
       <height>31</height>
@@ -279,7 +352,10 @@
     </property>
     <property name="font">
      <font>
+      <family>Yu Gothic UI Semibold</family>
       <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="text">
@@ -289,23 +365,10 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="backbutton">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>41</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QDateEdit" name="bdatein">
     <property name="geometry">
      <rect>
-      <x>380</x>
+      <x>390</x>
       <y>240</y>
       <width>141</width>
       <height>31</height>
@@ -313,29 +376,44 @@
     </property>
     <property name="font">
      <font>
+      <family>Yu Gothic UI</family>
       <pointsize>11</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 5px;
+background-color: rgb(180, 180, 180);</string>
     </property>
    </widget>
    <widget class="QLabel" name="passinfo">
     <property name="geometry">
      <rect>
-      <x>550</x>
-      <y>170</y>
+      <x>540</x>
+      <y>250</y>
       <width>21</width>
       <height>16</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
     <property name="text">
      <string>X</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="backbutton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>500</y>
+      <width>71</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 10px;
+color: rgb(255, 255, 255);
+background-color: rgb(85, 170, 127);</string>
+    </property>
+    <property name="text">
+     <string>&lt;--</string>
     </property>
    </widget>
   </widget>
@@ -344,7 +422,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>739</width>
      <height>26</height>
     </rect>
    </property>

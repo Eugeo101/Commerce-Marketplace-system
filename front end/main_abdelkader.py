@@ -6,7 +6,6 @@ from password_strength import PasswordStats
 from password_strength import PasswordPolicy
 from email_validator import validate_email, EmailNotValidError
 from pyisemail import is_email
-#from client import *
 from PyQt5.QtCore import *
 from pynotifier import Notification
 
@@ -41,7 +40,7 @@ def notify(title,desc,duration = 10,path='',urg = 'normal'):
     Notification(
         title=title,
         description=desc,
-        icon_path=path,  # On Windows .ico is required, on Linux - .png  EX: '/absolute/path/to/image/icon.png'
+        #icon_path=path,  # On Windows .ico is required, on Linux - .png  EX: '/absolute/path/to/image/icon.png'
         duration=duration,  # Duration in seconds
         urgency=urg
     ).send()
@@ -95,6 +94,15 @@ class createAcc(QMainWindow): #back to login page
         self.bdatein.setDisplayFormat("yyyy-MM-dd")
         self.bdatein.setMaximumDate(QDate(2015,12,30))
         self.bdatein.setMinimumDate(QDate(1900, 1, 1))
+        self.passinfo.setToolTip("Password must \n"
+                                 "- be at least 10 characters \n"
+                                 "- have at least 1 lowercase character \n"
+                                 "- have at least 1 uppercase character \n"
+                                 "- have at least 1 special character \n"
+                                 "- have at least 1 digit \n")
+        self.passinfo.setToolTipDuration(20000)
+        #QLabel.sett
+        #if i make hover and label
         #self.passinfo.setEnabled()
         #self.passinfo.setMouseTracking()
         #self.passinfo.mouseMoveEvent()
@@ -123,7 +131,12 @@ class createAcc(QMainWindow): #back to login page
         elif not is_email(email,allow_gtld=False):
             showerror('Invalid Email','')
         elif (len(policy.test(password))!=0):
-            showerror("Invalid Password", "Password length must be 10 min and at least contains 1 upper case letter 1 digit and 1 special char")
+            showerror("Invalid Password", "Password must \n"
+                                 "- be at least 10 characters \n"
+                                 "- have at least 1 lowercase character \n"
+                                 "- have at least 1 uppercase character \n"
+                                 "- have at least 1 special character \n"
+                                 "- have at least 1 digit \n")
         elif (cpassword!=password):
             showerror("password doesn't match", "")
         elif not country.isalpha():
@@ -144,6 +157,9 @@ class createAcc(QMainWindow): #back to login page
         widget.setCurrentIndex(widget.currentIndex() - 1)
         dwidget = widget(widget.currentIndex() + 1)
         widget.removeWidget(dwidget)
+
+    def showpassinfo(self):
+        showerror('Pass info','must be 10 chars')
 
 class editAccount(QMainWindow): #back to view page
     def __init__(self):
@@ -196,7 +212,7 @@ class editAccount(QMainWindow): #back to view page
 class mainPage(QMainWindow):
     def __init__(self):
         super(mainPage, self).__init__()
-        uic.loadUi('mainpage.ui', self)
+        uic.loadUi('mainpage.ui', self) ###Error here ###dont know why
 
 class changePass(QMainWindow):
     def __init__(self):
