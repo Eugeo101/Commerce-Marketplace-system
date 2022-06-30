@@ -15,6 +15,7 @@ EDIT_PROFILE = "EDIT_PROFILE"
 CHANGE_PASSWORD = "CHANGE_PASSWORD"
 DEPOSIT = "DEPOSIT"
 BUY = "PURCHASE"
+PURCHASE = "BUY_ALL"
 GET_BALANCE = "GET_BALANCE"
 GET_ITEMS = "GET_ITEMS"
 GET_PROFILE = "GET_PROFILE"
@@ -46,6 +47,12 @@ OK = "OK"
 NO = "NO"
 INCORRECT_PASSWORD = "Password is incorrect"
 INCORRECT_EMAIL = "This Account Doesnt exist"
+IMAGE = "image"
+PROCESSOR = "processor"
+MEMORY = "memory"
+STORAGE = "storage"
+MANUFACT = "manufact"
+PRICE = "price"
 #--------------------------------------------#
 
 #------------Initialize client socket-----------#
@@ -121,10 +128,14 @@ class Socket:
 
     @staticmethod
     def requestServer(requestType,message):
-        message[REQUEST] = requestType
-        if requestType == GET_PROFILE or requestType == CHANGE_PASSWORD or requestType == DEPOSIT or requestType == ADD_CART or requestType == REMOVE_CART or requestType == GET_CART or requestType == GET_BALANCE or requestType == HISTORY:
-            message[EMAIL] = Socket.__email
-        Socket.__send(message)
+        if(requestType == PURCHASE):
+            for buyRequest in message[ITEMS]:
+                Socket.requestServer(BUY,{ITEM_NAME:buyRequest[ITEM_NAME],DESCRIPTION:buyRequest[DESCRIPTION],QUANTITY:buyRequest[QUANTITY]})
+        else:
+            message[REQUEST] = requestType
+            if requestType == GET_PROFILE or requestType == CHANGE_PASSWORD or requestType == DEPOSIT or requestType == ADD_CART or requestType == REMOVE_CART or requestType == GET_CART or requestType == GET_BALANCE or requestType == HISTORY or requestType == BUY:
+                message[EMAIL] = Socket.__email
+            Socket.__send(message)
         return Socket.__receive()
     @staticmethod
     def requestServer(requestType):
