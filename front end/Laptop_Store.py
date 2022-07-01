@@ -670,7 +670,39 @@ class ChangePassword(QDialog):
         ##print('300')
         widget.addWidget(editAccount())
         widget.setCurrentIndex(widget.currentIndex() + 1)
-        
+
+class History(QDialog):
+    def __init__(self):
+        super(History,self).__init__()
+        uic.loadUi("History.ui",self)
+        self.backbutton.clicked.connect(gotomain)
+        self.loaddata()
+
+    def loaddata(self):
+        History = requestServer1(HISTORY)
+        purchased_items = History[ITEMS]
+        if len(purchased_items) == 0:
+            # ##print('627')
+            self.errorlabel.setText("NO ITEMS PURCHASED YET!")
+        else:
+            self.tableWidget.setColumnCount(len(purchased_items[0]))
+            self.tableWidget.setRowCount(len(History[ITEMS]))
+            row = 0
+            # ##print(History[ITEMS])
+            ##print(purchased_items)
+            for record in purchased_items: #[[], [], []]
+                self.tableWidget.setItem(row, 0, QtWidgets.QTableWidgetItem(str(record[0])))
+                self.tableWidget.setItem(row, 1, QtWidgets.QTableWidgetItem(str(record[1])))
+                self.tableWidget.setItem(row, 2, QtWidgets.QTableWidgetItem(str(record[2])))
+                self.tableWidget.setItem(row, 3, QtWidgets.QTableWidgetItem(str(record[3])))
+                self.tableWidget.setItem(row, 4, QtWidgets.QTableWidgetItem(str(record[4])))
+                row = row + 1
+            # self.tableWidget.verticalHeader().setDefaultSectionSize(200)
+            self.tableWidget.horizontalHeader().setDefaultSectionSize(300)
+            # -> items (ororororo) or profile
+            # -> back
+            # design
+      
 class Deposit(QDialog):
 
     balance = 0
