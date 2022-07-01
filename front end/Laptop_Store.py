@@ -606,7 +606,110 @@ class purchase(QDialog):
             self.tableWidget_2.setItem(9,column, QtWidgets.QTableWidgetItem(str(person[QUANTITY])))
             column = column + 1
         self.tableWidget_2.verticalHeader().setDefaultSectionSize(200)
-        self.tableWidget_2.horizontalHeader().setDefaultSectionSize(200)        
+        self.tableWidget_2.horizontalHeader().setDefaultSectionSize(200)
+class ChangePassword(QDialog):
+    def __init__(self):
+        super(ChangePassword, self).__init__()
+        uic.loadUi("ChangePassword.ui",self)
+        self.oldpasswordfield.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.newpasswordfield.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.confirmpasswordfield.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.confirm.clicked.connect(self.confirmfunction)
+        self.backbutton.clicked.connect(self.goback)
+
+
+    def confirmfunction(self):
+        newpassword = self.newpasswordfield.text()
+        oldpassword = self.oldpasswordfield.text()
+        confirmpassword = self.confirmpasswordfield.text()
+        uppercase = False
+        lowercase = False
+        numeric = False
+        specialchar = False
+
+
+        if len(newpassword)==0 or len(oldpassword)==0 or len(confirmpassword)==0:
+            self.error4.setText("Please input all fields.")
+
+        else:
+            self.error4.setText("")
+
+            special_char = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
+
+            if (special_char.search(newpassword) == None):
+                specialchar = False
+            else:
+                specialchar = True
+            for i in range(0, len(newpassword)):
+                if newpassword[i].isupper():
+                    uppercase = True
+                if newpassword[i].islower():
+                    lowercase = True
+                if newpassword[i].isnumeric():
+                    numeric = True
+
+            if len(newpassword) >= 10 and uppercase == True and lowercase == True and numeric == True and specialchar == True:
+                self.error2.setText("")
+                if newpassword == confirmpassword:
+                    self.error3.setText("")
+                else:
+                    self.error3.setText("Must match the previuos entry")
+            else:
+                self.error2.setText(
+                    "The password must be at least 10 characters contains uppercase, lowercase, numbers and special characters")
+            ##print('290')
+            result = requestServer(CHANGE_PASSWORD,{PASSWORD:oldpassword, NEW_PASSWORD: newpassword})
+            ##print('291')
+            if (result[RESPONSE] == OK):
+               # self.error1.setText("")
+               self.goback()
+            else:
+               self.error1.setText("Incorrect password")
+
+    def goback(self):
+        ##print('300')
+        widget.addWidget(editAccount())
+        widget.setCurrentIndex(widget.currentIndex() + 1)
+        
+class Deposit(QDialog):
+
+    balance = 0
+
+    def __init__(self):
+        super(Deposit, self).__init__()
+        uic.loadUi("Deposit.ui",self)
+        self.confirmDeposit.clicked.connect(self.depositfunction)
+        self.balance = str(requestServer1(GET_BALANCE)[CASH])
+        self.balanceview.setText(self.balance)
+        # self.depositfield.textChanged.connect(self.changenewbalance)
+        self.backbutton.clicked.connect(gotomain)
+
+    # def changenewbalance(self):
+    #     try:
+    #         depositamount = self.depositfield.text()
+    #         # ##print(depositamount)
+    #         depamountint = int(depositamount)
+    #         balanceint = int(self.balance)
+    #         self.balance = depamountint + balanceint # 600 ->
+    #         self.newBalance.setText(str(self.balance))
+    #         self.newBalance.repaint()
+    #     except:
+    #         self.newBalance.setText(str(self.balance))
+
+
+    def depositfunction(self):
+        depositamount = self.depositfield.text()
+        numeric = True
+
+        for i in range(0,len(depositamount)):
+            numeric = numeric & depositamount[i].isnumeric()
+
+        if numeric == False or len(depositamount) == 0:
+            self.depositerror.setText("Please Enter Numbers")
+        else:
+            # self.depositerror.setText("")
+            newbalance = requestServer(DEPOSIT, {DEPOSIT_AMOUNT: depositamount})[CASH]
+            gotomain()       
 
 mainwindow = Login()
 widget.addWidget(mainwindow)
