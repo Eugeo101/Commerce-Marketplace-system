@@ -8,22 +8,16 @@ from email_validator import validate_email, EmailNotValidError
 from pyisemail import is_email
 from PyQt5.QtCore import *
 from pynotifier import Notification
-
+from client import *
 
 app = QApplication(sys.argv)
 widget = QtWidgets.QStackedWidget()
 
-#def isvalid(bdate):
-#    if(len(bdate) != 10):
-#        return 0
-#    if(bdate[0].isdigit() and bdate[1].isdigit()
-#            and bdate[2].isdigit() and bdate[3].isdigit() and bdate[5].isdigit()
- #           and bdate[6].isdigit() and bdate[8].isdigit() and bdate[9].isdigit()
-  #          and (bdate[0] == 1 or bdate[0] == 2) and bdate[4] == '-'
-   #         and bdate[7] == '-' ):
-    #    return 1
-    #return 0
-
+def gotomain(): #add on stack
+    # print('22') #1000
+    var = cart()
+    widget.addWidget(var)
+    widget.setCurrentIndex(widget.currentIndex() + 1)
 
 def showerror(errorCause,details):
     msg = QMessageBox()
@@ -48,7 +42,7 @@ def notify(title,desc,duration = 10,path='',urg = 'normal'):
 class Login(QMainWindow):
     def __init__(self):
         super(Login, self).__init__()
-        uic.loadUi('login.ui', self)
+        uic.loadUi('login.ui', self) #load ui screen
         self.loginbutton.clicked.connect(self.gotomainpage)
         self.passwordin.setEchoMode(QLineEdit.Password)
         self.donthavebutton.clicked.connect(self.gotocreateacc)
@@ -67,20 +61,23 @@ class Login(QMainWindow):
             special=1,  # need min. 2 special characters
             nonletters=2,  # need min. 2 non-letter characters (digits, specials, anything)
         )
-        mainpage = mainPage()
         email = self.mailin.text()
         password = self.passwordin.text()
-        #print(policy.test(password)) #######imp########
+        ###print(policy.test(password)) #######imp########
+
+        resp = requestServer(LOGIN, {EMAIL: email, PASSWORD: password})[RESPONSE]
 
         if not is_email(email,allow_gtld=False):
             showerror('Invalid Email or Password','')
         elif (len(policy.test(password))!=0):
             showerror("Invalid Email or Password",'') #here I just show 'invalid email or password' For Security reasons
-        #elif(Socket.requestServer(LOGIN, {EMAIL:email, PASSWORD:password})[RESPONSE] == NO):
-        #    showerror("Invalid Email or Password", '')
+        elif(resp == 'Password is incorrect'):
+            showerror("Login Failed!", 'check password again')
+        elif (resp == 'This Account Doesnt exist'):
+            showerror("Login Failed!", 'This account does not exist!')
         else:
-        #    Socket.login(email)
-            widget.addWidget(mainpage)
+            login(email)
+            widget.addWidget(cart())
             widget.setCurrentIndex(widget.currentIndex() + 1)
 
 class createAcc(QMainWindow): #back to login page
@@ -101,11 +98,6 @@ class createAcc(QMainWindow): #back to login page
                                  "- have at least 1 special character \n"
                                  "- have at least 1 digit \n")
         self.passinfo.setToolTipDuration(20000)
-        #QLabel.sett
-        #if i make hover and label
-        #self.passinfo.setEnabled()
-        #self.passinfo.setMouseTracking()
-        #self.passinfo.mouseMoveEvent()
 
     def gotomainpage(self):
         policy = PasswordPolicy.from_names(
@@ -115,7 +107,6 @@ class createAcc(QMainWindow): #back to login page
             special=1,  # need min. 1 special characters
             nonletters=2,  # need min. 2 non-letter characters (digits, specials, anything)
         )
-        mainpage = mainPage()
         fname = self.fnamein.text()
         lname = self.lnamein.text()
         email = self.emailin.text()
@@ -145,43 +136,69 @@ class createAcc(QMainWindow): #back to login page
             showerror("Invalid City", '')
         elif (not job.isalpha()):
             showerror("Invalid Job", '')
-        #elif(Socket.requestServer(CREATE_ACCOUNT, {EMAIL:email, PASSWORD:password, JOB:job, CITY:city,
-         #                                          COUNTRY:country, LNAME:lname, FNAME:fname, BDATE:bdate})[RESPONSE] == NO):
-          #  showerror("Email Exists Before", 'Try another Email')
+        elif(requestServer(CREATE_ACCOUNT, {EMAIL:email, PASSWORD:password, JOB:job, CITY:city,
+                                                  COUNTRY:country, LNAME:lname, FNAME:fname, BDATE:bdate})[RESPONSE] == NO):
+           showerror("Email Exists Before", 'Try another Email')
         else:
-            #Socket.login(email)
-            widget.addWidget(mainpage)
+            login(email)
+            widget.addWidget(cart())
             widget.setCurrentIndex(widget.currentIndex() + 1)
 
     def goback(self):
-        widget.setCurrentIndex(widget.currentIndex() - 1)
-        dwidget = widget(widget.currentIndex() + 1)
-        widget.removeWidget(dwidget)
+        widget.addWidget(Login())
+        widget.setCurrentIndex(widget.currentIndex() + 1)
 
     def showpassinfo(self):
         showerror('Pass info','must be 10 chars')
-
+        
 class editAccount(QMainWindow): #back to view page
     def __init__(self):
         super(editAccount, self).__init__()
         uic.loadUi('edit_acc.ui', self)
+        self.backbutton.clicked.connect(self.goback)
         self.savebutton.clicked.connect(self.gotoviewacc)
         self.chpassbutton.clicked.connect(self.gotochangepass)
         self.bdatein.setDisplayFormat("yyyy-MM-dd")
         self.bdatein.setMaximumDate(QDate(2015, 12, 30))
         self.bdatein.setMinimumDate(QDate(1900, 1, 1))
 
-        #data = Socket.requestServer(GET_PROFILE)
-        #self.mailview.setText(Socket.getEmail())
-        #self.fnamein.setText(data[FNAME])
-        #self.lnamein.setText(data[LNAME])
-        #self.bdatein.setText(data[BDATE])
-        #self.countryin.setText(data[COUNTRY])
-        #self.cityin.setText(data[CITY])
-        #self.jobin.setText(data[JOB])
+        # ##print('169')
+        data = requestServer1(GET_PROFILE)
+        # ##print('171')
+        self.mailview.setText(str((getEmail())))
+        self.fnamein.setText(str(data[FNAME]))
+        self.lnamein.setText(str(data[LNAME]))
+        date_str = str(data[BDATE])
+        # print(date_str)
+        # convert str to QDate
+        qdate = QtCore.QDate.fromString(date_str, "yyyy-MM-dd")
+        self.bdatein.setDate(qdate)
+        # self.bdatein.setText(str(data[BDATE]))
+        # # print("182")
+        # date = QDateEdit(self)
+        # print("184")
+        # # setting geometry of the date edit
+        # # date.setGeometry(100, 100, 150, 40)
+        # print("187")
+        # # date
+        # listo = data[BDATE].split('-')
+        # print(listo)
+        # # my_date = datetime.datetime(data[BDATE])
+        # # my_date = datetime.datetime.now()
+        # print("190")
+        # d = QDate(int(listo[0]), int(listo[1]), int(listo[2]))
+        # print("192")
+        # print(d)
+        # # setting date to the date edit
+        # date.setDate(d)
+        # print("195")
+        self.countryin.setText(str(data[COUNTRY]))
+        self.cityin.setText(str(data[CITY]))
+        self.jobin.setText(str(data[JOB]))
+        # ##print('179')
 
     def gotoviewacc(self):
-        viewacc = viewAccount()
+
         fname = self.fnamein.text()
         lname = self.lnamein.text()
         bdate = self.bdatein.text() #make its constraints
@@ -197,42 +214,47 @@ class editAccount(QMainWindow): #back to view page
             showerror("Invalid City", '')
         elif (not job.isalpha()):
             showerror("Invalid Job", '')
-        #elif(Socket.requestServer(EDIT_PROFILE, {EMAIL:Socket.getEmail(), JOB:job, CITY:city,
-        #                                           COUNTRY:country, LNAME:lname, FNAME:fname, BDATE:bdate})[RESPONSE] == NO):
-        #    showerror("SOME ERROR OCCURED FROM SERVERSIDE", 'Try another Email')
+        elif(requestServer(EDIT_PROFILE, {EMAIL:getEmail(), JOB:job, CITY:city,
+                                                   COUNTRY:country, LNAME:lname, FNAME:fname, BDATE:bdate})[RESPONSE] == NO):
+            showerror("SOME ERROR OCCURED FROM SERVERSIDE", 'Try another Email')
         else:
+            viewacc = viewAccount()
             widget.addWidget(viewacc)
             widget.setCurrentIndex(widget.currentIndex() + 1)
 
     def gotochangepass(self):
-        changepass = changePass()
+        changepass = ChangePassword()
         widget.addWidget(changepass)
         widget.setCurrentIndex(widget.currentIndex() + 1)
 
-class mainPage(QMainWindow):
-    def __init__(self):
-        super(mainPage, self).__init__()
-        uic.loadUi('mainpage.ui', self) ###Error here ###dont know why
-
-class changePass(QMainWindow):
-    def __init__(self):
-        super(changePass, self).__init__()
-        uic.loadUi('change_pass.ui', self)
+    def goback(self):
+        widget.addWidget(viewAccount())
+        widget.setCurrentIndex(widget.currentIndex() + 1)
 
 class viewAccount(QMainWindow): #back button main page
     def __init__(self):
         super(viewAccount, self).__init__()
         uic.loadUi('view_acc.ui', self)
+        # print('215')
         self.editbutton.clicked.connect(self.gotoeditaccount)
-        #data = Socket.requestServer(GET_PROFILE)
-        #self.mailview.setText(Socket.getEmail())
-        #self.fnameview.setText(data[FNAME])
-        #self.lnameview.setText(data[LNAME])
-        #self.bdateview.setText(data[BDATE])
-        #self.countryview.setText(data[COUNTRY])
-        #self.cityview.setText(data[CITY])
-        #self.jobview.setText(data[JOB])
-        #self.balanceview.setText(data[CASH])
+        data = requestServer1(GET_PROFILE)
+        # print('218')
+        self.mailview.setText(str(getEmail()))
+        # print('224')
+        self.fnameview.setText(str(data[FNAME]))
+        self.lnameview.setText(str(data[LNAME]))
+        # print('227')
+        self.bdateview.setText(str(data[BDATE]))
+        # print('229')
+        self.countryview.setText(str(data[COUNTRY]))
+        self.cityview.setText(str(data[CITY]))
+        # print('232')
+        self.jobview.setText(str(data[JOB]))
+        # print('234')
+        self.balanceview.setText(str(data[CURRENT_MONEY]))
+        #self.showMaximized()
+        # print('236') str[
+        self.backbutton.clicked.connect(gotomain)
 
     def gotoeditaccount(self):
         editaccount = editAccount()

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>615</height>
+    <width>1200</width>
+    <height>850</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,16 +23,16 @@
    <widget class="QPushButton" name="savebutton">
     <property name="geometry">
      <rect>
-      <x>290</x>
-      <y>360</y>
-      <width>201</width>
-      <height>41</height>
+      <x>480</x>
+      <y>540</y>
+      <width>221</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Yu Gothic UI Semibold</family>
-      <pointsize>11</pointsize>
+      <pointsize>14</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -49,16 +49,16 @@ background-color: rgb(85, 170, 127);</string>
    <widget class="QLabel" name="joblabel">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>300</y>
-      <width>41</width>
-      <height>31</height>
+      <x>420</x>
+      <y>450</y>
+      <width>61</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Yu Gothic UI Semibold</family>
-      <pointsize>12</pointsize>
+      <pointsize>14</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -70,33 +70,38 @@ background-color: rgb(85, 170, 127);</string>
    <widget class="QLineEdit" name="countryin">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>220</y>
-      <width>141</width>
-      <height>31</height>
+      <x>590</x>
+      <y>330</y>
+      <width>151</width>
+      <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">border-radius: 5px;
 background-color: rgb(180, 180, 180);</string>
     </property>
     <property name="clearButtonEnabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLabel" name="lastnamelabel">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>140</y>
-      <width>111</width>
+      <x>420</x>
+      <y>210</y>
+      <width>131</width>
       <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Yu Gothic UI Semibold</family>
-      <pointsize>12</pointsize>
+      <pointsize>14</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -108,11 +113,16 @@ background-color: rgb(180, 180, 180);</string>
    <widget class="QLineEdit" name="lnamein">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>140</y>
-      <width>141</width>
-      <height>31</height>
+      <x>590</x>
+      <y>210</y>
+      <width>151</width>
+      <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">border-radius: 5px;
@@ -125,33 +135,38 @@ background-color: rgb(180, 180, 180);</string>
    <widget class="QLineEdit" name="cityin">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>260</y>
-      <width>141</width>
-      <height>31</height>
+      <x>590</x>
+      <y>390</y>
+      <width>151</width>
+      <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">border-radius: 5px;
 background-color: rgb(180, 180, 180);</string>
     </property>
     <property name="clearButtonEnabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLabel" name="bdatelabel">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>180</y>
-      <width>101</width>
-      <height>31</height>
+      <x>420</x>
+      <y>270</y>
+      <width>121</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Yu Gothic UI Semibold</family>
-      <pointsize>12</pointsize>
+      <pointsize>14</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -166,16 +181,16 @@ background-color: rgb(180, 180, 180);</string>
    <widget class="QLabel" name="countrylabel">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>220</y>
-      <width>81</width>
-      <height>31</height>
+      <x>420</x>
+      <y>330</y>
+      <width>111</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Yu Gothic UI Semibold</family>
-      <pointsize>12</pointsize>
+      <pointsize>14</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -187,11 +202,16 @@ background-color: rgb(180, 180, 180);</string>
    <widget class="QLineEdit" name="jobin">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>300</y>
-      <width>141</width>
-      <height>31</height>
+      <x>590</x>
+      <y>450</y>
+      <width>151</width>
+      <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">border-radius: 5px;
@@ -204,16 +224,16 @@ background-color: rgb(180, 180, 180);</string>
    <widget class="QLabel" name="firstnamelabel">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>100</y>
-      <width>101</width>
-      <height>31</height>
+      <x>420</x>
+      <y>150</y>
+      <width>121</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Yu Gothic UI Semibold</family>
-      <pointsize>12</pointsize>
+      <pointsize>14</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -228,16 +248,16 @@ background-color: rgb(180, 180, 180);</string>
    <widget class="QLabel" name="emaillabel">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>60</y>
-      <width>131</width>
-      <height>21</height>
+      <x>420</x>
+      <y>90</y>
+      <width>151</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Yu Gothic UI Semibold</family>
-      <pointsize>12</pointsize>
+      <pointsize>14</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -252,11 +272,16 @@ background-color: rgb(180, 180, 180);</string>
    <widget class="QLineEdit" name="fnamein">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>100</y>
-      <width>141</width>
-      <height>31</height>
+      <x>590</x>
+      <y>150</y>
+      <width>151</width>
+      <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">border-radius: 5px;
@@ -272,16 +297,16 @@ background-color: rgb(180, 180, 180);</string>
    <widget class="QLabel" name="citylabel">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>260</y>
-      <width>41</width>
-      <height>31</height>
+      <x>420</x>
+      <y>390</y>
+      <width>71</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Yu Gothic UI Semibold</family>
-      <pointsize>12</pointsize>
+      <pointsize>14</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -296,16 +321,16 @@ background-color: rgb(180, 180, 180);</string>
    <widget class="QPushButton" name="chpassbutton">
     <property name="geometry">
      <rect>
-      <x>290</x>
-      <y>420</y>
-      <width>201</width>
-      <height>41</height>
+      <x>480</x>
+      <y>610</y>
+      <width>221</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Yu Gothic UI Semibold</family>
-      <pointsize>11</pointsize>
+      <pointsize>14</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -322,11 +347,16 @@ background-color: rgb(85, 170, 127);</string>
    <widget class="QLabel" name="mailview">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>60</y>
-      <width>251</width>
-      <height>31</height>
+      <x>590</x>
+      <y>90</y>
+      <width>261</width>
+      <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
     </property>
     <property name="layoutDirection">
      <enum>Qt::LeftToRight</enum>
@@ -348,16 +378,16 @@ background-color: rgb(180, 180, 180);</string>
    <widget class="QDateEdit" name="bdatein">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>180</y>
-      <width>141</width>
-      <height>31</height>
+      <x>590</x>
+      <y>270</y>
+      <width>151</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Yu Gothic UI</family>
-      <pointsize>11</pointsize>
+      <pointsize>12</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -368,8 +398,8 @@ background-color: rgb(180, 180, 180);</string>
    <widget class="QPushButton" name="backbutton">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>520</y>
+      <x>20</x>
+      <y>740</y>
       <width>71</width>
       <height>41</height>
      </rect>
@@ -377,6 +407,7 @@ background-color: rgb(180, 180, 180);</string>
     <property name="font">
      <font>
       <family>Century Gothic</family>
+      <pointsize>8</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -394,7 +425,7 @@ background-color: rgb(85, 170, 127);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1200</width>
      <height>26</height>
     </rect>
    </property>
